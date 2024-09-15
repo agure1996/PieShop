@@ -10,9 +10,13 @@ namespace PieShopHRM
     internal class Utilities
     {
 
-        private static string directory = @"C:\Users\dell\Desktop\Projects\VS Code Projects\csharp\PieShop\data\";
-        private static string filename = @"Employees.txt";
+        //private static string directory = @"C:\Users\dell\Desktop\Projects\VS Code Projects\csharp\PieShop\data\";
+        //private static string filename = @"Employees.txt";
 
+        // Use relative path for 'data' folder within the project directory
+
+        private static string directory = Path.Combine(Directory.GetCurrentDirectory(), "data");
+        private static string filename = Path.Combine(directory, @$"\Employees.txt");
 
         internal static void RegisterEmployee(List<Employee> employees)
         {
@@ -200,8 +204,18 @@ namespace PieShopHRM
                 sb.Append(Environment.NewLine);
            
             }
+            try
+            {
 
             File.WriteAllText(completePath, sb.ToString());
+            }
+            catch(IOException ioe)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Filename or directory name could be wrong, check path of directory or file!\n\n");
+                Console.WriteLine(ioe.Message);
+                Console.WriteLine(ioe.StackTrace);
+            } 
         }
 
         private static string GetEmployeeType(Employee employee)
